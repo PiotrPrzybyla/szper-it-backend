@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { CreateEscapeRoomDto } from './dto/create-escape-room.dto';
 import { UpdateEscapeRoomDto } from './dto/update-escape-room.dto';
-import { PrismaService } from 'src/prisma/prisma.service';
+import { PrismaService } from '../prisma/prisma.service';
 
 @Injectable()
 export class EscapeRoomService {
