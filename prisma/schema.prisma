@@ -1,0 +1,60 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model City {
+  id          Int           @id @default(autoincrement())
+  name        String
+  escapeRooms EscapeRoom[]
+}
+
+model EscapeRoom {
+  id          Int      @id @default(autoincrement())
+  name        String
+  description String
+  cityId      Int
+  city        City    @relation(fields: [cityId], references: [id])
+  reviews     Review[]
+}
+
+model User {
+  id          Int      @id @default(autoincrement())
+  name        String
+  surname     String
+  username    String   @unique
+  mail        String   @unique
+  description String?
+  reviews     Review[]
+}
+
+model Review {
+  id             Int              @id @default(autoincrement())
+  escapeRoomId   Int
+  userId         Int
+  description    String
+  escapeRoom     EscapeRoom       @relation(fields: [escapeRoomId], references: [id])
+  user           User             @relation(fields: [userId], references: [id])
+  reviewCategory ReviewCategory[]
+}
+
+model Category {
+  id             Int              @id @default(autoincrement())
+  name           String
+  reviewCategory ReviewCategory[]
+}
+
+model ReviewCategory {
+  id          Int      @id @default(autoincrement())
+  value       Int
+  reviewId    Int
+  categoryId  Int
+  review      Review   @relation(fields: [reviewId], references: [id])
+  category    Category @relation(fields: [categoryId], references: [id])
+
+  @@unique([reviewId, categoryId])
+}
